@@ -15,6 +15,8 @@ db = SQLAlchemy(app)
 # DB Models
 class Students(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    enrolments = db.relationship('Enrolments', backref='students') # FK many to many Enrolments
+    s_grades = db.relationship('Grades', backref='students') # FK ref Grades
     student_fname = db.Column(db.String(30), nullable=False)
     student_lname = db.Column(db.String(30), nullable=False)
     student_address1 = db.Column(db.String(50), nullable=False)
@@ -30,6 +32,8 @@ class Students(db.Model):
 
 class Tutors(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    t_modules = db.relationship('Modules', backref='tutors') # FK ref Modules
+    t_grades = db.relationship('Grades', backref='tutors') # FK ref Grades
     tutor_fname = db.Column(db.String(30), nullable=False)
     tutor_lname = db.Column(db.String(30), nullable=False)
     tutor_address1 = db.Column(db.String(50), nullable=False)
@@ -45,23 +49,25 @@ class Tutors(db.Model):
 
 class Modules(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    enrolments = db.relationship('Enrolments', backref='modules') # FK ref Enrolments
+    m_tutor_id = db.Column(db.Integer, db.ForeignKey('tutors.id'), nullable=False) # FK Tutors
     module_name = db.Column(db.String(30), nullable=False)
-    m_tutor_id = db.Column(db.Integer) # foreign key !!!!!!!!!!!!!!!
     description = db.Column(db.String(50), nullable=False)
 
 
-class Enrolment(db.Model):
+class Enrolments(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    enrol_student_id = db.Column(db.Integer) # foreign keys !!!!!!!!!!!!!!
-    enrol_module_id = db.Column(db.Integer)
+    enrol_student_id = db.Column('student_id', db.Integer, db.ForeignKey('students.id')) # FK students
+    enrol_module_id = db.Column('modules_id', db.Integer, db.ForeignKey('modules.id')) # FK modules
+    enrol_grade_id = db.relationship('Grades', backref='enrolments', uselist=False) # FK ref Grades
     academic_year = db.Column(db.Date, nullable=False)
 
 
 class Grades(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    grades_student_id = db.Column(db.Integer) # foreign keys !!!!!!!!!!!!!!
-    grades_tutor_id = db.Column(db.Integer)
-    grades_enrol_id = db.Column(db.Integer)
+    grades_student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False) # FK Students 
+    grades_tutor_id = db.Column(db.Integer, db.ForeignKey('tutors.id'), nullable=False) # FK Tutors
+    grades_enrol_id = db.Column(db.Integer, db.ForeignKey('enrolments.id'), nullable=False)
     academic_year = db.Column(db.Date, nullable=False)
     ca1_score = db.Column(db.Integer)
     ca2_score = db.Column(db.Integer)
@@ -80,8 +86,8 @@ for i in range(1,11):
     student_city = 'city' + str(i),
     student_county = 'county' + str(i),
     student_phone =  random.randint(871111111, 879999999),
-    student_DOB = date(year=1990 + i, month=1 + i, day=12 + i),
-    student_email = 'email@' + str(i),
+    student_DOB = date(year = random.randint(1960, 2004), month=random.randint(1, 12), day=random.randint(1, 28)),
+    student_email = 'email_' + str(i) + '@gmail.com',
     student_password_ff = 'hash' + str(i),
     authority_lvl = 0)
 
@@ -95,9 +101,9 @@ for i in range(1,6):
     tutor_address2 = 'address2 ' + str(i),
     tutor_city = 'city' + str(i),
     tutor_county = 'county' + str(i),
-    tutor_phone =  8575568 * i,
-    tutor_DOB = date(year=1990 + i, month=1 + i, day=12 + i),
-    tutor_email = 'email@' + str(i),
+    tutor_phone =  random.randint(871111111, 879999999),
+    tutor_DOB = date(year = random.randint(1960, 2004), month=random.randint(1, 12), day=random.randint(1, 28)),
+    tutor_email = 'email_' + str(i) + '@gmail.com',
     tutor_password_ff = 'hash' + str(i),
     authority_lvl = 1)
 
@@ -111,7 +117,7 @@ for i in range(1,6):
     db.session.add(module)
 
 for i in range(1,51):
-    enrolment = Enrolment(enrol_student_id = random.randint(1, 10), # foreign keys !!!!!!!!!!!!!!
+    enrolment = Enrolments(enrol_student_id = random.randint(1, 10), # foreign keys !!!!!!!!!!!!!!
     enrol_module_id = random.randint(1, 5),
     academic_year = date(year=2022, month=9, day=1))
 
