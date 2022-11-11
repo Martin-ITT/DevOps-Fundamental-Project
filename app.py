@@ -2,6 +2,7 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date
+import random
 
 app = Flask(__name__)
 
@@ -62,15 +63,15 @@ class Grades(db.Model):
     grades_tutor_id = db.Column(db.Integer)
     grades_enrol_id = db.Column(db.Integer)
     academic_year = db.Column(db.Date, nullable=False)
-    ca1_score = db.Column(db.Integer, nullable=False)
-    ca2_score = db.Column(db.Integer, nullable=False)
-    exam_score = db.Column(db.Integer, nullable=False)
+    ca1_score = db.Column(db.Integer)
+    ca2_score = db.Column(db.Integer)
+    exam_score = db.Column(db.Integer)
 
 
 db.drop_all()
 db.create_all()
 
-
+# add to DB
 for i in range(1,11):
     student = Students(student_fname = 'fname' + str(i),
     student_lname = 'lname' + str(i),
@@ -78,7 +79,7 @@ for i in range(1,11):
     student_address2 = 'address2 ' + str(i),
     student_city = 'city' + str(i),
     student_county = 'county' + str(i),
-    student_phone =  8575568 * i,
+    student_phone =  random.randint(871111111, 879999999),
     student_DOB = date(year=1990 + i, month=1 + i, day=12 + i),
     student_email = 'email@' + str(i),
     student_password_ff = 'hash' + str(i),
@@ -98,12 +99,38 @@ for i in range(1,6):
     tutor_DOB = date(year=1990 + i, month=1 + i, day=12 + i),
     tutor_email = 'email@' + str(i),
     tutor_password_ff = 'hash' + str(i),
-    authority_lvl = 0)
+    authority_lvl = 1)
 
     db.session.add(tutor)
 
+for i in range(1,6):
+    module = Modules(module_name = 'module ' + str(i),
+    m_tutor_id = random.randint(1, 5), # foreign key !!!!!!!!!!!!!!!
+    description = 'module description ' + str(i))
+
+    db.session.add(module)
+
+for i in range(1,51):
+    enrolment = Enrolment(enrol_student_id = random.randint(1, 10), # foreign keys !!!!!!!!!!!!!!
+    enrol_module_id = random.randint(1, 5),
+    academic_year = date(year=2022, month=9, day=1))
+
+    db.session.add(enrolment)
+
+for i in range(1, 21):
+    grade = Grades(grades_student_id = random.randint(1, 10), # foreign keys !!!!!!!!!!!!!!
+    grades_tutor_id = random.randint(1, 5),
+    grades_enrol_id = random.randint(1, 50),
+    academic_year = date(year=2022, month=9, day=1),
+    ca1_score = random.randint(0, 100),
+    ca2_score = random.randint(1, 100),
+    exam_score = random.randint(1, 100))
+
+    db.session.add(grade)
+
 
 db.session.commit()
+
 
 '''
 testuser = Users(first_name='Grooty',last_name='Toot') # Extra: this section populates the table with an example entry
