@@ -1,7 +1,7 @@
-from app import db
+from application import db
 from datetime import date
 import random
-from app import Students, Tutors, Enrolments, Modules
+from application.models import Students, Tutors, Enrolments, Modules
 
 db.drop_all()
 db.create_all()
@@ -47,7 +47,7 @@ for i in range(1,6):
 
 
 for i in range(1,11):
-    for x in range (1, random.randint(2,5)):
+    for x in range (1, random.randint(3,5)):
         enrolment = Enrolments(enrol_student_id = i,
         enrol_module_id = x,
         academic_year = date(year=2022, month=9, day=1))
