@@ -10,8 +10,8 @@ db.create_all()
 for i in range(1,11):
     student = Students(student_fname = 'fname' + str(i),
     student_lname = 'lname' + str(i),
-    student_address1 = 'address1 ' + str(i),
-    student_address2 = 'address2 ' + str(i),
+    student_address1 = 'address1_' + str(i),
+    student_address2 = 'address2_' + str(i),
     student_city = 'city' + str(i),
     student_county = 'county' + str(i),
     student_phone =  random.randint(871111111, 879999999),

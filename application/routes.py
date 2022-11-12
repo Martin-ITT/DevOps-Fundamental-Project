@@ -1,12 +1,12 @@
 from application import app, db
+from flask import render_template
 from application.models import Students, Tutors, Modules, Enrolments
+from application.forms import RegistrationForm
 
 @app.route('/')
 @app.route('/home')
 def home():
-    txt = Students.query.first()
-    print(txt)
-    return f"This is student phone: {txt.student_phone}"
+    return render_template("index.html")
 
 @app.route('/about')
 def about():
