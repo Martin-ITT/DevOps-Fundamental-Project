@@ -12,7 +12,7 @@ class Students(db.Model):
     student_phone = db.Column(db.Integer, nullable=False)
     student_DOB = db.Column(db.Date, nullable=False)
     student_email = db.Column(db.String(50), nullable=False)
-    student_password_ff = db.Column(db.String(50), nullable=False)
+    student_password_ff = db.Column(db.String(150), nullable=False)
     authority_lvl = db.Column(db.Integer, nullable=False)
 
 
