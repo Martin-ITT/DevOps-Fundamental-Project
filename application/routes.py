@@ -54,7 +54,7 @@ def register():
             db.session.commit()
 
             # user cookie session
-            session["user"] = form.user_email.data.lower()
+            session["user_email"] = form.user_email.data.lower()
             flash("User registered succesfully")
             # flash("cookie: {}".format(session['user']))
 
@@ -121,4 +121,13 @@ def profile(useremail):
         # first to be retrieved on html, second from previous line
         return render_template("profile.html", student = student)
     
+    return redirect(url_for("login"))
+
+
+# user logout route
+@app.route("/logout")
+def logout():
+    # remove user from cookie session
+    session.pop("user_email")
+    flash("You have been logged out")
     return redirect(url_for("login"))

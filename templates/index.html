@@ -2,9 +2,12 @@
 {% block content %}
 
 <section id="bg-image">
-
-    <a href="{{ url_for('login') }}" class="btn btn-primary border-warning btn-lg" id="button-fix" tabindex="-1" role="button" aria-disabled="true">Log in</a>
-
+    {% if session.user_email %}
+        <a href="{{ url_for('logout') }}" class="btn btn-primary border-warning btn-lg" id="button-fix" tabindex="-1" role="button" aria-disabled="true">Log out</a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="btn btn-primary border-warning btn-lg" id="button-fix" tabindex="-1" role="button" aria-disabled="true">Log in</a>
+    {% endif %}
+    
 </section>
 
 {% endblock %}
