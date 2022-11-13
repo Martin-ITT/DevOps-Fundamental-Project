@@ -29,3 +29,12 @@ class RegistrationForm(FlaskForm):
         'user_email', validators=[InputRequired(), Email(), Length(max=40), Regexp(
             '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$',
             message="Invalid characters in email address.")])
+
+# user login form
+class LoginForm(FlaskForm):
+    user_login_email = StringField(
+        'user_login_email', validators=[DataRequired(), Length(
+            max=40, message='Email must be maximum of \
+                %(max)d characters long')])
+    user_login_password = PasswordField(
+        'user_login_password', validators=[DataRequired()])

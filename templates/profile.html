@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+    {% for item in student %}
+        <h3 class="center-align indigo-text hide-on-small-only">{{ item.student_fname.capitalize() }}'s profile</h3>
+        <h4 class="center-align indigo-text hide-on-med-and-up">{{ item.student_fname.capitalize() }}'s' profile</h4>
+    {% endfor %}
+     <!-- change password -->
+     <div class="row">
+        <div class="col s12 m8 offset-m2">
+            <div class="card-panel indigo center-align">
+                <h5 class="center-align white-text">Need new password?
+                    <hr>
+                    <a href="{{ url_for('login') }}" class="center-align btn">Change password</a>
+                </h5>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete account -->
+    <div class="row">
+        <div class="col s12 m8 offset-m2">
+            <div class="card-panel indigo center-align">
+                <h5 class="center-align white-text">Delete account?
+                    <hr>
+                    <a href="{{ url_for('login') }}" class="center-align btn">Delete</a>
+                </h5>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
