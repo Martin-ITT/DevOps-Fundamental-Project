@@ -21,7 +21,6 @@ def register():
     if form.validate_on_submit():
         
         email = form.user_email.data
-        password = form.user_password.data
 
         # check if email exists
         existing_email = Students.query.filter_by(student_email=email).all()
@@ -34,8 +33,8 @@ def register():
             return redirect(url_for('register'))
         
         else:
-            student = Students(student_fname = 'Please update your name',
-            student_lname = 'Please update your name',
+            student = Students(student_fname = form.user_fname.data,
+            student_lname = form.user_lname.data,
             student_address1 = 'Please update your address',
             student_address2 = 'Please update your address',
             student_city = 'Please update your address',
@@ -51,19 +50,19 @@ def register():
 
             db.session.add(student)
             db.session.commit()
+            
             print(generate_password_hash(
                 form.user_password.data,
                 method='pbkdf2:sha512:52000',
                 salt_length=16))
         
-
-        # user cookie session
-        session["user"] = form.user_email.data.lower()
-        flash("User registered succesfully")
-        # flash("cookie: {}".format(session['user']))
-        
-        # return redirect(url_for('profile', username=session['user']))
-        return redirect(url_for('register'))
+            # user cookie session
+            session["user"] = form.user_email.data.lower()
+            # flash("User registered succesfully")
+            flash("cookie: {}".format(session['user']))
+            
+            # return redirect(url_for('profile', username=session['user']))
+            return redirect(url_for('register'))
 
     students = Students.query.filter_by(student_fname="fname1").all()
     return render_template("register.html", form=form, students=students)

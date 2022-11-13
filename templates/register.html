@@ -12,8 +12,32 @@
                 <div class="row">
                     <form class="col s12" method="POST" action="{{ url_for('register') }}">
                         {{ form.csrf_token }}
-                        <!-- username -->
-                        
+                        <!-- user fname -->
+                        <div class="row">
+                            <div class="input-field col s12 left-align">
+                                <i class="fas fa-user-plus prefix white-text"></i>
+                                {{ form.user_fname(placeholder="Please enter your name") }}
+                                <span class="text-muted grey-text">Must be between 5-15 characters .</span>
+                                <ul>
+                                    {% for error in form.user_fname.errors %}
+                                    <li style="color:red;">{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- user lname -->
+                        <div class="row">
+                            <div class="input-field col s12 left-align">
+                                <i class="fas fa-user-plus prefix white-text"></i>
+                                {{ form.user_lname(placeholder="Please enter your name") }}
+                                <span class="text-muted grey-text">Must be between 5-15 characters .</span>
+                                <ul>
+                                    {% for error in form.user_lname.errors %}
+                                    <li style="color:red;">{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
                         <!-- password -->
                         <div class="row">
                             <div class=" input-field col s12 left-align">
@@ -28,7 +52,18 @@
                             </div>
                         </div>
                         <!-- password chceck -->
-                        
+                        <div class="row">
+                            <div class="input-field col s12 left-align">
+                                <i class="fas fa-lock prefix white-text"></i>
+                                {{ form.check_password(placeholder="Please re-enter password") }}
+                                <span class="text-muted grey-text">Passwords must be the same.</span>
+                                <ul>
+                                    {% for error in form.check_password.errors %}
+                                    <li style="color:red;">{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
                         <!-- email -->
                         <div class="row">
                             <div class="input-field col s12 left-align">
