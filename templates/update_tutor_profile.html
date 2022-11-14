@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="center-align indigo-text hide-on-small-only">Change details</h3>
+
+    <!-- registration form -->
+    <div class="row m-auto w-50">
+        <div class="">
+            <div class="">
+                <div class="row">
+                    <form class="" method="POST" action="{{ url_for('update_tutor_profile', tutor_id=tutor.id) }}">
+                        {{ form.csrf_token }}
+                        <!-- tutor fname -->
+                        <div class="row">
+                            {{ form.tutor_fname(readonly=true, class="form-input small-input", value=tutor.tutor_fname) }}
+                            <span class="text-danger bg-dark">Forename cannot be edited</span>
+                            <ul>
+                                {% for error in form.tutor_fname.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- tutor lname -->
+                        <div class="row">
+                            {{ form.tutor_lname(readonly=true, class="form-input small-input", value=tutor.tutor_lname) }}
+                            <span class="text-danger bg-dark">Surname cannot be edited</span>
+                            <ul>
+                                {% for error in form.tutor_lname.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- tutor address 1 -->
+                        <div class="row">
+                            {{ form.tutor_address1(class="form-input small-input", value=tutor.tutor_address1) }}
+                            <span class="text-warning bg-dark">Address line 1</span>
+                            <ul>
+                                {% for error in form.tutor_address1.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- tutor address 2 -->
+                        <div class="row">
+                        {{ form.tutor_address2(class="form-input small-input", value=tutor.tutor_address2) }}
+                        <span class="text-warning bg-dark">Address line 2</span>
+                        <ul>
+                            {% for error in form.tutor_address2.errors %}
+                            <li style="color:red;">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        </div>
+                        <!-- tutor city -->
+                        <div class="row">
+                            {{ form.tutor_city(class="form-input small-input", value=tutor.tutor_city) }}
+                            <span class="text-warning bg-dark">City</span>
+                            <ul>
+                                {% for error in form.tutor_city.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- tutor county -->
+                        <div class="row">
+                            {{ form.tutor_county(class="form-input small-input", value=tutor.tutor_county) }}
+                            <span class="text-warning bg-dark">County</span>
+                            <ul>
+                                {% for error in form.tutor_county.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- tutor phone -->
+                        <div class="row">
+                            {{ form.tutor_phone(class="form-input small-input", value=tutor.tutor_phone) }}
+                            <span class="text-warning bg-dark">Phone number</span>
+                            <ul>
+                                {% for error in form.tutor_phone.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- tutor DOB -->
+                        <div class="row">
+                            {{ form.tutor_DOB(class="form-input small-input", value=tutor.tutor_DOB) }}
+                            <span class="text-warning bg-dark">Date of birth</span>
+                            <ul>
+                                {% for error in form.tutor_DOB.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- tutor email -->
+                        <div class="row">
+                            {{ form.tutor_email(readonly=true, class="form-input small-input", value=tutor.tutor_email) }}
+                            <span class="text-danger bg-dark">Email address cannot be changed</span>
+                            <ul>
+                                {% for error in form.tutor_email.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <button type="submit" class="btn btn-primary border-warning w-25 m-auto">
+                            Update
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

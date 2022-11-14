@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="center-align indigo-text hide-on-small-only">Change details</h3>
+
+    <!-- registration form -->
+    <div class="row m-auto w-50">
+        <div class="">
+            <div class="">
+                <div class="row">
+                    <form class="" method="POST" action="{{ url_for('update_student_profile', student_id=student.id) }}">
+                        {{ form.csrf_token }}
+                        <!-- student fname -->
+                        <div class="row">
+                            {% if session['user_email'] == "admin@admin.com" %}
+                            {{ form.student_fname(class="form-input small-input", value=student.student_fname) }}
+                            <span class="text-warning bg-dark">Forename</span>
+                            {% else %}
+                            {{ form.student_fname(readonly=true, class="form-input small-input", value=student.student_fname) }}
+                            <span class="text-danger bg-dark">Only admin can update name</span>
+                            {% endif %}
+                            <ul>
+                                {% for error in form.student_fname.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- student lname -->
+                        <div class="row">
+                            {% if session['user_email'] == "admin@admin.com" %}
+                            {{ form.student_lname(class="form-input small-input", value=student.student_lname) }}
+                            <span class="text-warning bg-dark">Surname</span>
+                            {% else %}
+                            {{ form.student_lname(readonly=true, class="form-input small-input", value=student.student_lname) }}
+                            <span class="text-danger bg-dark">Only admin can update name</span>
+                            {% endif %}
+                            <ul>
+                                {% for error in form.student_lname.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- student address 1 -->
+                        <div class="row">
+                            {{ form.student_address1(class="form-input small-input", value=student.student_address1) }}
+                            <span class="text-warning bg-dark">Address line 1</span>
+                            <ul>
+                                {% for error in form.student_address1.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- student address 2 -->
+                        <div class="row">
+                        {{ form.student_address2(class="form-input small-input", value=student.student_address2) }}
+                        <span class="text-warning bg-dark">Address line 2</span>
+                        <ul>
+                            {% for error in form.student_address2.errors %}
+                            <li style="color:red;">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        </div>
+                        <!-- student city -->
+                        <div class="row">
+                            {{ form.student_city(class="form-input small-input", value=student.student_city) }}
+                            <span class="text-warning bg-dark">City</span>
+                            <ul>
+                                {% for error in form.student_city.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- student county -->
+                        <div class="row">
+                            {{ form.student_county(class="form-input small-input", value=student.student_county) }}
+                            <span class="text-warning bg-dark">County</span>
+                            <ul>
+                                {% for error in form.student_county.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- student phone -->
+                        <div class="row">
+                            {{ form.student_phone(class="form-input small-input", value=student.student_phone) }}
+                            <span class="text-warning bg-dark">Phone number</span>
+                            <ul>
+                                {% for error in form.student_phone.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- student DOB -->
+                        <div class="row">
+                            {% if session['user_email'] == "admin@admin.com" %}
+                            {{ form.student_DOB(class="form-input small-input", value=student.student_DOB) }}
+                            <span class="text-warning bg-dark">Date of birth</span>
+                            {% else %}
+                            {{ form.student_DOB(readonly=true, class="form-input small-input", value=student.student_DOB) }}
+                            <span class="text-danger bg-dark">Only admin can update DOB</span>
+                            {% endif %}
+                            <ul>
+                                {% for error in form.student_DOB.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- student email -->
+                        <div class="row">
+                            {% if session['user_email'] == "admin@admin.com" %}
+                            {{ form.student_email(class="form-input small-input", value=student.student_email) }}
+                            <span class="text-warning bg-dark">Email address</span>
+                            {% else %}
+                            {{ form.student_email(readonly=true, class="form-input small-input", value=student.student_email) }}
+                            <span class="text-danger bg-dark">Only admin can update email address</span>
+                            {% endif %}
+                            <ul>
+                                {% for error in form.student_email.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="text-center">
+                        <button type="submit" class="btn btn-warning border-primary btn-sm">
+                            Update
+                        </button>
+                        {% if session['user_email'] == "admin@admin.com" %}
+                        <a href="{{ url_for('delete_student', student_id=student.id) }}" class="btn btn-danger border-warning btn-sm">Delete</a>
+                        <a href="{{ url_for('tutor_profile', user_email=session['user_email']) }}" class="btn btn-primary border-warning btn-sm">Cancel</a>
+                        {% else %}
+                        <a href="{{ url_for('profile', user_email=session['user_email']) }}" class="btn btn-primary border-warning btn-sm">Cancel</a>
+                        {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

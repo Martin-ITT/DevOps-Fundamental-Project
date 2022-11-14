@@ -1,13 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
 
-<section id="bg-image">
-    {% if session.user_email %}
-        <a href="{{ url_for('logout') }}" class="btn btn-primary border-warning btn-lg" id="button-fix" tabindex="-1" role="button" aria-disabled="true">Log out</a>
-    {% else %}
-        <a href="{{ url_for('login') }}" class="btn btn-primary border-warning btn-lg" id="button-fix" tabindex="-1" role="button" aria-disabled="true">Log in</a>
-    {% endif %}
-    
+<section>
+
+    <div class="my-container">
+
+        {% if session.user_email %}
+            <a href="{{ url_for('logout') }}" class="btn btn-primary border-warning btn-lg my-btns mt-5" role="button" aria-disabled="true">Log out</a>
+        {% else %}
+            <a href="{{ url_for('student_login') }}" class="btn btn-primary border-warning btn-lg my-btns mt-5" tabindex="-1" role="button" aria-disabled="true">Student Log in</a>
+
+            <a href="{{ url_for('tutor_login') }}" class="btn btn-primary border-warning btn-lg my-btns mt-5" role="button" aria-disabled="true">Tutor Log in</a>
+        {% endif %}
+    </div>
+
 </section>
 
 {% endblock %}

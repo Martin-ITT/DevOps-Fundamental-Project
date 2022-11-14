@@ -2,14 +2,14 @@ from application import db
 
 class Students(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    enrolments = db.relationship('Enrolments', backref='students') # FK one to many Enrolments
+    enrolments = db.relationship('Enrolments', cascade="all,delete", backref='students') # FK one to many Enrolments
     student_fname = db.Column(db.String(30), nullable=False)
     student_lname = db.Column(db.String(30), nullable=False)
     student_address1 = db.Column(db.String(50), nullable=False)
     student_address2 = db.Column(db.String(50), nullable=False)
     student_city = db.Column(db.String(30), nullable=False)
     student_county = db.Column(db.String(30), nullable=False)
-    student_phone = db.Column(db.Integer, nullable=False)
+    student_phone = db.Column(db.String(20), nullable=False)
     student_DOB = db.Column(db.Date, nullable=False)
     student_email = db.Column(db.String(50), nullable=False)
     student_password_ff = db.Column(db.String(150), nullable=False)
@@ -38,11 +38,13 @@ class Modules(db.Model):
     m_tutor_id = db.Column(db.Integer, db.ForeignKey('tutors.id'), nullable=False) # FK Tutors
     module_name = db.Column(db.String(30), nullable=False)
     description = db.Column(db.String(50), nullable=False)
+    def __str__(self):
+        return f"Moudule {self.name}"
 
 
 class Enrolments(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    enrol_student_id = db.Column('student_id', db.Integer, db.ForeignKey('students.id')) # FK students
+    enrol_student_id = db.Column('students_id', db.Integer, db.ForeignKey('students.id')) # FK students
     enrol_module_id = db.Column('modules_id', db.Integer, db.ForeignKey('modules.id')) # FK modules
     academic_year = db.Column(db.Date, nullable=False)
     ca1_score = db.Column(db.Integer)

@@ -2,3 +2,5 @@ venv/
 __pycache__/
 env.py
 register-1.html
+profile-1.html
+create.py

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <section>
+        <!-- registration form -->
+        <div class="my-container">
+            <form class="me-3" method="POST" action="{{ url_for('tutor_register') }}">
+                {{ form.csrf_token }}
+                <!-- user fname -->
+                <div class="row">
+                    {{ form.user_fname(placeholder="Please enter your forename") }}
+                    <span class="text-warning bg-dark">Must be between 5-15 characters .</span>
+                    <ul>
+                        {% for error in form.user_fname.errors %}
+                        <li style="color:red;">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- user lname -->
+                <div class="row">
+                    {{ form.user_lname(placeholder="Please enter your surname") }}
+                    <span class="text-warning bg-dark">Must be between 5-15 characters .</span>
+                    <ul>
+                        {% for error in form.user_lname.errors %}
+                        <li style="color:red;">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- password -->
+                <div class="row">
+                    {{ form.user_password(placeholder="Please enter password") }}
+                    <span class="text-warning bg-dark">Must be between 8 and 20 characters.</span>
+                    <ul>
+                        {% for error in form.user_password.errors %}
+                        <li style="color:red;">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- password chceck -->
+                <div class="row">
+                    {{ form.check_password(placeholder="Please re-enter password") }}
+                    <span class="text-warning bg-dark">Passwords must be the same.</span>
+                    <ul>
+                        {% for error in form.check_password.errors %}
+                        <li style="color:red;">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- email -->
+                <div class="row">
+                    {{ form.user_email(placeholder="Please enter valid email address") }}
+                    <span class="text-warning bg-dark">Valid email address is required.</span>
+                    <ul>
+                        {% for error in form.user_email.errors %}
+                        <li style="color:red;">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="row">
+                    <button type="submit" class="btn btn-primary border-warning w-25 m-auto">
+                        Register tutor
+                    </button>
+                </div>
+            </form>
+            <!-- not registerd yet -->
+            <div class="row me-3">
+                <hr class="mt-2 text-primary">
+                <h5 class="text-warning text-center bg-dark">Already registered?</h5>
+                <hr class="mt-2 text-primary">
+                <a href="{{ url_for('student_login') }}" class="btn btn-primary m-auto border-warning w-25">Log in</a>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

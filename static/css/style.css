@@ -1,5 +1,5 @@
 body {
-    color: red;
+    color: white;
 }
 #bg-image {
     background-image: url(/static/img/pexels-buro-millennial-1438072.jpg); /* The image used */
@@ -9,10 +9,12 @@ body {
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; /* Resize the background image to cover the entire container */
   }
-
-  #button-fix {
-    position: fixed;
-    bottom: 25%;
-    width: 50%;
-    left: 25%;
+  
+  .my-container {
+    padding-left: 70vw;
+    padding-top: 20vh;
+  }
+  
+  .my-btns {
+    width: 20vw;
   }

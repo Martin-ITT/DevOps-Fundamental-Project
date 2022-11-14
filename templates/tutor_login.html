@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+    <section>
+    
+        <!-- log in form -->
+        <div class="my-container">
+
+            <form class="me-3" method="POST" action="{{ url_for('tutor_login') }}">
+                {{ form.csrf_token }}
+                <!-- username -->
+                <div class="row">                 
+                    {{ form.user_login_email(placeholder="Please enter your email") }}
+                    <span class="text-warning bg-dark">Must be max 40 characters .</span>
+                    <ul>
+                        {% for error in form.user_login_email.errors %}
+                        <li style="color:red;">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- password -->
+                <div class="row">    
+                    {{ form.user_login_password(placeholder="Please enter password") }}
+                    <span class="text-warning bg-dark">Must be between 8 and 20 characters.</span>
+                    <ul>
+                        {% for error in form.user_login_password.errors %}
+                        <li style="color:red;">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- log in button -->
+                <div class="row">
+                    <button type="submit" class="btn btn-primary border-warning w-25 m-auto">
+                        Log In tutor
+                    </button>
+                </div>
+            </form>
+            <!-- not registerd yet -->
+            <div class="row me-3">
+                <hr class="mt-2 text-primary">
+                <h5 class="text-warning text-center bg-dark">Not registerd yet?</h5>
+                <hr class="mt-2 text-primary">
+                <a href="{{ url_for('student_register') }}" class="btn btn-primary m-auto border-warning w-25">Register</a>
+            </div>
+
+        </div>
+
+        
+    
+    </section>
+
+{% endblock %}

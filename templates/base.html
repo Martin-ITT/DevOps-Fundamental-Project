@@ -19,15 +19,22 @@
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     {% if session.user_email %}
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
                     </li>
                     {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('login') }}">Log in</a>
+                        <a class="nav-link" href="{{ url_for('student_login') }}">Student Log in</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                        <a class="nav-link" href="{{ url_for('student_register') }}">Student Registraion</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('tutor_login') }}">Tutor Log in</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('tutor_register') }}">Tutor Registraion</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -36,26 +43,24 @@
     </nav>
     
     <!-- extended block-->
-    <main>
+    <main  id="bg-image">
+        <!-- flash messages -->
+        <section>   
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="row me-3">
+                            <div class="">
+                                <h4 class="text-danger text-center bg-dark">{{ message }}</h4>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </section>
         {% block content %}
         {% endblock %}
     </main>
-
-    
-    <!-- flash messages -->
-    <section>   
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="row flashes">
-                        <div class="col s10 offset-s1">
-                            <h4 class="teal lighten-1 white-text center-align">{{ message }}</h4>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-    </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
