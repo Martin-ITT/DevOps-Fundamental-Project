@@ -19,7 +19,6 @@ def home():
 def student_register():
     # refer to registration form
     form = RegistrationForm()
-    # print(form.user_email)
 
     # POST method
     if form.validate_on_submit():
@@ -52,12 +51,11 @@ def student_register():
             authority_lvl = 0)
 
             db.session.add(student)
+            db.session.commit()
 
             # f = open("mynew.txt", "w")
             # f.write(student.student_password_ff)
             # f.close()
-
-            db.session.commit()
 
             # user cookie session
             session["user_email"] = form.user_email.data.lower()
@@ -77,7 +75,6 @@ def tutor_register():
     tutors = Tutors.query.filter_by(tutor_fname="fname1").all()
     # refer to registration form
     form = RegistrationForm()
-    # print(form.user_email)
 
     # POST method
     if form.validate_on_submit():
@@ -110,7 +107,6 @@ def tutor_register():
             authority_lvl = 0)
 
             db.session.add(tutor)
-
             db.session.commit()
 
             # user cookie session
@@ -133,24 +129,17 @@ def student_login():
     if form.validate_on_submit():
         email = form.user_login_email.data
         # check if email exists
-        student = Students.query.filter_by(student_email=email).all()
-        
-        get_email_fromDB = ""
-        get_fname_fromDB = ""
-        for item in student:
-            get_email_fromDB = item.student_password_ff
-            get_fname_fromDB = item.student_fname
+        student = Students.query.filter_by(student_email=email).first()
         
         if student:
             # check if password match
-            if check_password_hash(get_email_fromDB,
+            if check_password_hash(student.student_password_ff,
                                    form.user_login_password.data):
 
                     session["user_email"] = form.user_login_email.data.lower()
-                    flash("Welcome, {}".format(get_fname_fromDB))
-                    # flash("cookie: {}".format(session['user']))
+                    flash("Welcome, {}".format(student.student_fname))
                     return redirect(
-                        url_for('profile', user_email=session['user_email']))
+                        url_for('profile', user_email=session['user_email'], student=student))
 
             else:
                 # password dont match
@@ -175,24 +164,14 @@ def tutor_login():
         email = form.user_login_email.data
         # check if email exists
         tutor = Tutors.query.filter_by(tutor_email=email).first()
-        '''
-        get_email_fromDB = ""
-        get_fname_fromDB = ""
-        for item in student:
-            get_email_fromDB = item.student_password_ff
-            get_fname_fromDB = item.student_fname
-        '''
+
         if tutor:
             # check if password match
-            if check_password_hash(tutor.tutor_password_ff,
-                                   form.user_login_password.data):
-
-                    session["user_email"] = form.user_login_email.data.lower()
-                    flash("Welcome, {}".format(tutor.tutor_fname))
-                    # print(session.user_email)
-                    # flash("cookie: {}".format(session['user_email']))
-                    return redirect(
-                        url_for('tutor_profile', user_email=session['user_email']))
+            if check_password_hash(tutor.tutor_password_ff, form.user_login_password.data):
+                session["user_email"] = form.user_login_email.data.lower()
+                flash("Welcome, {}".format(tutor.tutor_fname))
+                return redirect(
+                    url_for('tutor_profile', user_email=session['user_email'], tutor=tutor))
 
             else:
                 # password dont match
@@ -215,10 +194,6 @@ def profile(user_email):
     if session['user_email']:
         student = Students.query.filter_by(student_email=session["user_email"]).first()
 
-        # for object in student_c:
-        #     student_name = object.student_fname
-
-        # first to be retrieved on html, second from previous line
         return render_template("profile.html", student=student)
     
     return redirect(url_for("login"))
@@ -232,10 +207,6 @@ def tutor_profile(user_email):
     if session['user_email']:
         tutor = Tutors.query.filter_by(tutor_email=session["user_email"]).first()
 
-        # for object in student_c:
-        #     student_name = object.student_fname
-
-        # first to be retrieved on html, second from previous line
         return render_template("tutor_profile.html", tutor=tutor)
     
     return redirect(url_for("tutor_login"))
@@ -347,6 +318,106 @@ def delete_student(student_id):
     return redirect(url_for('home'))
 
 
+# admin_add_student
+@app.route("/admin_add_student", methods=["GET", "POST"])
+def admin_add_student():
+    if session['user_email'] == "admin@admin.com":
+        # refer to registration form
+        form = RegistrationForm()
+
+        # POST method
+        if form.validate_on_submit():
+
+            email = form.user_email.data
+
+            # check if email exists
+            existing_email = Students.query.filter_by(student_email=email).first()
+
+            # if email exists
+            if existing_email:
+
+                flash("Email already registered")
+                return redirect(url_for('admin_add_student'))
+
+            else:
+                student = Students(student_fname = form.user_fname.data,
+                student_lname = form.user_lname.data,
+                student_address1 = 'Please update your address',
+                student_address2 = 'Please update your address',
+                student_city = 'Please update your address',
+                student_county = 'Please update your address',
+                student_phone =  871111111,
+                student_DOB = date(year = 2000, month=1, day=1),
+                student_email = email,
+                student_password_ff = generate_password_hash(
+                    form.user_password.data,
+                    method='pbkdf2:sha512:52000',
+                    salt_length=16),
+                authority_lvl = 0)
+
+                db.session.add(student)
+                db.session.commit()
+
+                flash("User registered succesfully")
+             
+                return redirect(url_for('student_management'))
+
+        # students = Students.query.filter_by(student_fname="fname1").all()
+        return render_template("student_register_admin.html", form=form)
+
+    return redirect(url_for('home'))
+
+
+# admin_add_tutor
+@app.route("/admin_add_tutor", methods=["GET", "POST"])
+def admin_add_tutor():
+    if session['user_email'] == "admin@admin.com":
+        # refer to registration form
+        form = RegistrationForm()
+
+        # POST method
+        if form.validate_on_submit():
+
+            email = form.user_email.data
+
+            # check if email exists
+            existing_email = Tutors.query.filter_by(tutor_email=email).first()
+
+            # if email exists
+            if existing_email:
+
+                flash("Email already registered")
+                return redirect(url_for('admin_add_tutor'))
+
+            else:
+                tutor = Tutors(tutor_fname = form.user_fname.data,
+                tutor_lname = form.user_lname.data,
+                tutor_address1 = 'Please update your address',
+                tutor_address2 = 'Please update your address',
+                tutor_city = 'Please update your address',
+                tutor_county = 'Please update your address',
+                tutor_phone =  871111111,
+                tutor_DOB = date(year = 2000, month=1, day=1),
+                tutor_email = email,
+                tutor_password_ff = generate_password_hash(
+                    form.user_password.data,
+                    method='pbkdf2:sha512:52000',
+                    salt_length=16),
+                authority_lvl = 0)
+
+                db.session.add(tutor)
+                db.session.commit()
+
+                flash("User registered succesfully")
+             
+                return redirect(url_for('tutor_management'))
+
+        return render_template("tutor_register_admin.html", form=form)
+
+    return redirect(url_for('home'))
+
+
+
 # tutor management
 @app.route("/tutor_ management")
 def tutor_management():
@@ -406,17 +477,15 @@ def update_module(module_id):
 
             module.module_name = form.module_name.data
             module.description = form.description.data
-            # module.enrolments = form.enrolments.data
             module.m_tutor_id = form.tutors.data.id
 
             # update tutor in database
             db.session.commit()
             flash("Record updated")
 
-            if session['user_email'] == "admin@admin.com":
-                return redirect(url_for('tutor_management'))
+            return redirect(url_for('modules_management'))
 
-            return redirect(url_for('profile', user_email=session['user_email']))
+            # return redirect(url_for('profile', user_email=session['user_email']))
 
     return render_template("update_modules.html", form=form, module=module)
 
@@ -435,3 +504,45 @@ def delete_module(module_id):
         return render_template("modules_management.html", modules=modules)
 
     return redirect(url_for('home'))
+
+
+# student grades
+@app.route("/student_grades_check/<int:student_id>", methods=["GET", "POST"])
+def student_grades_check(student_id):
+    if session['user_email']:
+
+        enrolments = Enrolments.query.filter_by(enrol_student_id=student_id).all()
+        
+        # POST method
+        if request.method == "POST":
+        # if form.validate_on_submit():
+            '''
+            module.module_name = form.module_name.data
+            module.description = form.description.data
+            module.m_tutor_id = form.tutors.data.id
+
+            # update tutor in database
+            db.session.commit()
+            flash("Record updated")
+
+            if session['user_email'] == "admin@admin.com":
+                return redirect(url_for('tutor_management'))
+
+            return redirect(url_for('profile', user_email=session['user_email']))
+            '''
+    return render_template("student_grades.html", enrolments=enrolments)
+
+
+# error handling
+@app.errorhandler(404)
+def page_not_found(err):
+        error_msg = err
+        flash("This is weird. It is not here!")
+        return render_template("error.html", error_msg=error_msg)
+
+
+@app.errorhandler(500)
+def server_error(err):
+    error_msg = err
+    flash("Something's not quite right.")
+    return render_template("error.html", error_msg=error_msg)

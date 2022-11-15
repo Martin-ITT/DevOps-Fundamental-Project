@@ -1,20 +1,30 @@
 body {
-    color: white;
+  color: white;
 }
+
 #bg-image {
-    background-image: url(/static/img/pexels-buro-millennial-1438072.jpg); /* The image used */
-    background-color: #00f3fc; /* Used if the image is unavailable */
-    height: calc(100vh - 56px); /* You must set a specified height */
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Do not repeat the image */
-    background-size: cover; /* Resize the background image to cover the entire container */
+  background-image: url(/static/img/pexels-buro-millennial-1438072.jpg); /* The image used */
+  background-color: #00f3fc; /* Used if the image is unavailable */
+  height: calc(100vh - 56px); /* You must set a specified height */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
   }
   
-  .my-container {
-    padding-left: 70vw;
-    padding-top: 20vh;
-  }
+.my-container {
+  padding-left: 70vw;
+  padding-top: 20vh;
+}
   
-  .my-btns {
-    width: 20vw;
-  }
+.my-btns {
+  width: 20vw;
+}
+
+.error-div {
+  width: 25vw;
+  margin: auto;
+  margin-top: 30vh;
+  font-size: larger;
+  background-color: aliceblue;
+  color: red;
+}

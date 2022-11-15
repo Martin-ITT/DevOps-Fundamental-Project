@@ -4,11 +4,11 @@
     <section>
         <!-- registration form -->
         <div class="my-container">
-            <form class="me-3" method="POST" action="{{ url_for('tutor_register') }}">
+            <form class="me-3" method="POST" action="{{ url_for('admin_add_student') }}">
                 {{ form.csrf_token }}
                 <!-- user fname -->
                 <div class="row">
-                    {{ form.user_fname(placeholder="Please enter your forename") }}
+                    {{ form.user_fname(placeholder="Please enter student's forename") }}
                     <span class="text-warning bg-dark">Must be between 5-15 characters .</span>
                     <ul>
                         {% for error in form.user_fname.errors %}
@@ -18,7 +18,7 @@
                 </div>
                 <!-- user lname -->
                 <div class="row">
-                    {{ form.user_lname(placeholder="Please enter your surname") }}
+                    {{ form.user_lname(placeholder="Please student's your surname") }}
                     <span class="text-warning bg-dark">Must be between 5-15 characters .</span>
                     <ul>
                         {% for error in form.user_lname.errors %}
@@ -28,8 +28,8 @@
                 </div>
                 <!-- password -->
                 <div class="row">
-                    {{ form.user_password(placeholder="Please enter password") }}
-                    <span class="text-warning bg-dark">Must be between 8 and 20 characters.</span>
+                    {{ form.user_password(placeholder="Password: letmein123") }}
+                    <span class="text-warning bg-dark">Use default password.</span>
                     <ul>
                         {% for error in form.user_password.errors %}
                         <li style="color:red;">{{ error }}</li>
@@ -58,17 +58,11 @@
                 </div>
                 <div class="row">
                     <button type="submit" class="btn btn-primary border-warning w-25 m-auto">
-                        Register tutor
+                        Register student
                     </button>
+                    <a href="{{ url_for('student_management') }}" class="btn btn-primary m-auto border-warning w-25">Back</a>
                 </div>
             </form>
-            <!-- not registerd yet -->
-            <div class="row me-3">
-                <hr class="mt-2 text-primary">
-                <h5 class="text-warning text-center bg-dark">Already registered?</h5>
-                <hr class="mt-2 text-primary">
-                <a href="{{ url_for('tutor_login') }}" class="btn btn-primary m-auto border-warning w-25">Log in</a>
-            </div>
         </div>
     </section>
 

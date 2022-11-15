@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section>
+    <div class="container pt-5">
+        <table class="table table-striped bg-light">
+            <thead>
+              <tr>
+                <th scope="col">Module</th>
+                <th scope="col">CA1</th>
+                <th scope="col">CA2</th>
+                <th scope="col">Exam</th>
+              </tr>
+            </thead>
+            {% for enrolment in enrolments %}
+            <tbody>
+              <tr>
+                <th scope="row">{{ enrolment.enrol_module_id }}</th>
+                <td> {{ enrolment.ca1_score }} </td>
+                <td> {{ enrolment.ca2_score }} </td>
+                <td> {{ enrolment.exam_score }} </td>
+              </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+        <div class="text-end">
+        <a href="{{ url_for('profile', user_email=session['user_email']) }}" class="btn btn-primary border-warning">Back</a>
+        </div>
+    </div>
+</section>
+    
+{% endblock %}

@@ -2,32 +2,41 @@
 {% block content %}
 
 <section>
-    
-    <div class="my-container me-3 text-danger">
+    <div class="text-danger text-end">
         <form action="#" method="POST">
-            <div class="row">
-                <div class="">
-                   
-                    <input type="text" name="query" id="query" minlength="3" class="validate white-text" required>
-                    <label for="query">Search</label>
-                    <span class="">At least 3 characters</span>                         
-                </div>
-                <div class="">
-                    <button type="submit" class="btn btn-primary border-warning btn-lg my-btns">Search</button>
-                    <a href="{{ url_for('tutor_profile', user_email=session['user_email']) }}" class="btn btn-primary border-warning btn-lg my-btns">Cancel</a>
-                   
-                </div>
+            <div class="text-warning bg-dark text-center pt-2">
+                <input type="text" name="query" id="query" minlength="3" class="validate white-text" required>
+                <label for="query">Search</label>
+                <span class="">At least 3 characters</span>                         
+            </div>
+            <div class="">
+                <button type="submit" class="btn btn-primary border-warning btn-lg my-btns">Search</button>
+                <a href="{{ url_for('tutor_profile', user_email=session['user_email']) }}" class="btn btn-primary border-warning btn-lg my-btns">Cancel</a>
             </div>
         </form>
-        {% for module in modules %}
-            <p>
-            {{ module.module_name }}
-            {{ module.description }}
-            {{ module.m_tutor_id }}
-            <a href="{{ url_for('update_module', module_id=module.id) }}" class="btn btn-primary border-warning btn-sm">Update or delete</a>
-        {% endfor %}
+        <table class="table bg-light">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Tutor</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            {% for module in modules %}
+            <tbody>
+                <tr>
+                    <th scope="row">{{ module.module_name }}</th>
+                    <td>{{ module.description }}</td>
+                    <td>{{ module.m_tutor_id }}</td>
+                    <td>
+                        <a href="{{ url_for('update_module', module_id=module.id) }}" class="btn btn-primary border-warning btn-sm">Update or delete</a>
+                    </td>
+                </tr>
+            </tbody>
+            {% endfor %}
+        </table>
     </div>
-
 </section>
     
 {% endblock %}

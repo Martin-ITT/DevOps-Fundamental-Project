@@ -46,13 +46,30 @@ for i in range(1,6):
     db.session.add(module)
 
 
-for i in range(1,11):
+for i in range(1,12):
     for x in range (1, random.randint(3,5)):
         enrolment = Enrolments(enrol_student_id = i,
         enrol_module_id = x,
-        academic_year = date(year=2022, month=9, day=1))
-
+        academic_year = date(year=2022, month=9, day=1),
+        ca1_score = random.randint(1,100),
+        ca2_score = random.randint(1,100),
+        exam_score = random.randint(1,100))
         db.session.add(enrolment)
+
+
+student = Students(student_fname = 'John',
+    student_lname = 'Doe',
+    student_address1 = '1 Main Street',
+    student_address2 = '',
+    student_city = 'Johnstown' + str(i),
+    student_county = 'Leitrim',
+    student_phone =  str(871234567),
+    student_DOB = date(year = random.randint(1960, 2004), month=random.randint(1, 12), day=random.randint(1, 28)),
+    student_email = 'john@john.com',
+    student_password_ff = 'pbkdf2:sha512:52000$JwTTeoU3pUAIvApF$7d9fd2c5abe989653c4f09dce2b1252ddcbc1a4eb37041d3c26ee0b3a49c6c60e7a0a85908abfbab900a2e27a1f06dd3590d1e76aa9639e49f569502bc92be5f',
+    authority_lvl = 0)
+
+db.session.add(student)
 
 
 tutor = Tutors(tutor_fname = 'admin',
