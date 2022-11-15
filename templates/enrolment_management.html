@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section>
+    <h3 class="text-center pt-3 pb-3 m-auto text-white bg-dark w-25">
+        Enrolment management
+    </h3>
+    <!--
+    <div class="text-danger text-end">
+        <form action="#" method="POST">
+            <div class="text-warning bg-dark text-center mt-5 mb-5 w-50 m-auto">
+                <input type="text" name="query" id="query" minlength="3" class="validate white-text" required>
+                <label for="query">Search</label>
+                <span class="">At least 3 characters</span>
+                <button type="submit" class="btn btn-primary border-warning btn-sm my-btns">Search</button>                      
+            </div>
+        </form>
+    -->
+        <section>
+            <!-- add enrolment form -->
+            <div class="container w-25 pt-5">
+                <form class="me-3" method="POST" action="{{ url_for('enrolment_management') }}">
+                    {{ form.csrf_token }}
+                    <!-- student id -->
+                    <div class="row">
+                        {{ form.enrol_student_id(placeholder="Please enter student id") }}
+                        <span class="text-warning bg-dark">Please enter student id.</span>
+                        <ul>
+                            {% for error in form.enrol_student_id.errors %}
+                            <li style="color:red;">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <!-- module_id -->
+                    <div class="row">
+                        {{ form.enrol_module_id(placeholder="Please enter module id") }}
+                        <span class="text-warning bg-dark">Please enter module id.</span>
+                        <ul>
+                            {% for error in form.enrol_module_id.errors %}
+                            <li style="color:red;">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                                       
+                    <div class="row">
+                        <button type="submit" class="btn btn-primary border-warning w-25 m-auto">
+                            Create enrolment
+                        </button>
+                        <a href="{{ url_for('tutor_profile') }}" class="btn btn-primary m-auto border-warning w-25">Back</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <!--
+        <table class="table bg-light">
+            <thead>
+              <tr>
+                <th scope="col">Forename</th>
+                <th scope="col">Surname</th>
+                <th scope="col">Email address</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            {% for tutor in tutors %}
+            <tbody>
+                <tr>
+                    <th scope="row">{{ tutor.tutor_fname }}</th>
+                    <td>{{ tutor.tutor_lname }}</td>
+                    <td>{{ tutor.tutor_email }}</td>
+                    <td>
+                        <a href="#" class="btn btn-primary border-warning btn-sm">Update or delete</a>
+                    </td>
+                </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+    -->
+    </div>
+</section>
+    
+{% endblock %}

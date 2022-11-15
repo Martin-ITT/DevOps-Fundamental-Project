@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h3 class="mx-auto text-center text-danger bg-dark w-25">Change tutor details</h3>
+<h3 class="mx-auto text-center bg-dark w-25">Change tutor details</h3>
 
     <!-- registration form -->
     <div class="row m-auto w-50">
@@ -129,9 +129,9 @@
                         <a href="{{ url_for('delete_tutor', tutor_id=tutor.id) }}" class="btn btn-danger border-warning btn-sm">Delete</a>
                             {% else %}
                             {% endif %}
-                        <a href="{{ url_for('tutor_management') }}" class="btn btn-primary border-warning btn-sm">Cancel</a>
+                        <a href="{{ url_for('tutor_profile') }}" class="btn btn-primary border-warning btn-sm">Cancel</a>
                         {% else %}
-                        <a href="{{ url_for('profile', user_email=session['user_email']) }}" class="btn btn-primary border-warning btn-sm">Cancel</a>
+                        <a href="{{ url_for('tutor_profile') }}" class="btn btn-primary border-warning btn-sm">Cancel</a>
                         {% endif %}
                         </div>
                     </form>

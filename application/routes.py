@@ -1,11 +1,12 @@
 from application import app, db
 from flask import render_template, request, flash, redirect, url_for, session
 from application.models import Students, Tutors, Modules, Enrolments
-from application.forms import RegistrationForm, LoginForm, StudentForm, TutorForm, ModulesForm
+from application.forms import (
+    RegistrationForm, LoginForm, StudentForm, TutorForm,
+        ModulesForm, AddModulesForm, GradesForm, EnrolmentForm)
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import date
 from flask_sqlalchemy import SQLAlchemy
-
 
 # index page route
 @app.route('/')
@@ -187,8 +188,8 @@ def tutor_login():
 
 
 # student profile route
-@app.route("/profile/<user_email>", methods=["GET", "POST"])
-def profile(user_email):
+@app.route("/profile", methods=["GET", "POST"])
+def profile():
    
     # only render if session cookie exist
     if session['user_email']:
@@ -200,8 +201,8 @@ def profile(user_email):
 
 
 # tutor profile route
-@app.route("/tutor_profile/<user_email>", methods=["GET", "POST"])
-def tutor_profile(user_email):
+@app.route("/tutor_profile", methods=["GET", "POST"])
+def tutor_profile():
    
     # only render if session cookie exist
     if session['user_email']:
@@ -285,7 +286,7 @@ def update_tutor_profile(tutor_id):
             if session['user_email'] == "admin@admin.com":
                 return redirect(url_for('tutor_management'))
 
-            return redirect(url_for('profile', user_email=session['user_email']))
+            return redirect(url_for('tutor_profile', user_email=session['user_email']))
 
     return render_template("update_tutor_profile.html", form=form, tutor=tutor)
 
@@ -417,7 +418,6 @@ def admin_add_tutor():
     return redirect(url_for('home'))
 
 
-
 # tutor management
 @app.route("/tutor_ management")
 def tutor_management():
@@ -459,6 +459,30 @@ def modules_management():
         f.close()
             
         return render_template("modules_management.html", modules=modules)
+
+    return redirect(url_for('home'))
+
+
+# admin_add_module
+@app.route("/admin_add_module", methods=["GET", "POST"])
+def admin_add_module():
+    if session['user_email'] == "admin@admin.com":
+        form = AddModulesForm()
+
+        # POST method
+        if request.method == "POST":
+            
+            module = Modules(module_name = form.module_name.data,
+                description = form.description.data,
+                m_tutor_id = form.tutors.data)
+
+            db.session.add(module)
+            db.session.commit()
+
+            flash("Record added!")
+            return(redirect('modules_management'))
+       
+        return render_template("module_register_admin.html", form=form)
 
     return redirect(url_for('home'))
 
@@ -506,32 +530,91 @@ def delete_module(module_id):
     return redirect(url_for('home'))
 
 
-# student grades
-@app.route("/student_grades_check/<int:student_id>", methods=["GET", "POST"])
+# student can check grades
+@app.route("/student_grades_check/<int:student_id>")
 def student_grades_check(student_id):
     if session['user_email']:
 
         enrolments = Enrolments.query.filter_by(enrol_student_id=student_id).all()
         
+    return render_template("student_grades.html", enrolments=enrolments)
+
+
+# tutor marks a student
+@app.route("/tutor_grades/<int:tutor_id>")
+def tutor_grades(tutor_id):
+    # need to add && auth level == 1
+    if session['user_email']:
+
+        enrolments = Enrolments.query\
+            .join(Modules, Modules.id == Enrolments.enrol_module_id)\
+                .add_columns(Modules.module_name, Modules.m_tutor_id)\
+                    .join(Students, Students.id == Enrolments.enrol_student_id)\
+                        .add_columns(Students.student_lname)\
+                            .join(Tutors, Modules.m_tutor_id == Tutors.id )\
+                                .add_columns(Tutors.tutor_lname)\
+                                    .filter(Modules.m_tutor_id == tutor_id).all()
+        
+        
+    return render_template("tutor_grades.html", enrolments=enrolments)
+
+
+# tutor can update grades here
+@app.route("/tutor_update_grades/<int:enrolment_id>", methods=["GET", "POST"])
+def tutor_update_grades(enrolment_id):
+    if session['user_email']:
+
+        form = GradesForm()
+        enrolment = Enrolments.query.filter_by(id=enrolment_id).first()
+        
         # POST method
         if request.method == "POST":
         # if form.validate_on_submit():
-            '''
-            module.module_name = form.module_name.data
-            module.description = form.description.data
-            module.m_tutor_id = form.tutors.data.id
+
+            enrolment.ca1_score = form.ca1.data
+            enrolment.ca2_score = form.ca2.data
+            enrolment.exam_score = form.exam.data
 
             # update tutor in database
             db.session.commit()
             flash("Record updated")
 
-            if session['user_email'] == "admin@admin.com":
-                return redirect(url_for('tutor_management'))
+            return redirect(url_for('tutor_profile', user_email=session['user_email']))
 
-            return redirect(url_for('profile', user_email=session['user_email']))
-            '''
-    return render_template("student_grades.html", enrolments=enrolments)
+            # return redirect(url_for('profile', user_email=session['user_email']))
 
+        return render_template("update_grades.html", form=form, enrolment=enrolment)
+
+
+#enrolment management
+@app.route("/enrolment_management/", methods=["GET", "POST"])
+def enrolment_management():
+    if session['user_email']:
+
+        form = EnrolmentForm()
+        # enrolment = Enrolments.query.filter_by(id=enrolment_id).first()
+        
+        # POST method
+        if request.method == "POST":
+        # if form.validate_on_submit():
+            
+            enrolment = Enrolments(enrol_student_id = form.enrol_student_id.data,
+            enrol_module_id = form.enrol_module_id.data,
+            academic_year = date(year=2022, month=9, day=1))
+
+            db.session.add(enrolment)
+            db.session.commit()
+
+            
+            # update tutor in database
+            # db.session.commit()
+            flash("Record added")
+
+            return redirect(url_for('enrolment_management'))
+
+            # return redirect(url_for('profile', user_email=session['user_email']))
+
+        return render_template("enrolment_management.html", form=form)
 
 # error handling
 @app.errorhandler(404)

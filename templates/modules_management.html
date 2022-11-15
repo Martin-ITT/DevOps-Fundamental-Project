@@ -12,6 +12,7 @@
             <div class="">
                 <button type="submit" class="btn btn-primary border-warning btn-lg my-btns">Search</button>
                 <a href="{{ url_for('tutor_profile', user_email=session['user_email']) }}" class="btn btn-primary border-warning btn-lg my-btns">Cancel</a>
+                <a href="{{ url_for('admin_add_module') }}" class="btn btn-success border-warning btn-lg my-btns">Add Moule</a>
             </div>
         </form>
         <table class="table bg-light">

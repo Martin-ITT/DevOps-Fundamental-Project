@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <section>
+        <!-- registration form -->
+        <div class="my-container">
+            <form class="me-3" method="POST" action="{{ url_for('admin_add_module') }}">
+                {{ form.csrf_token }}
+                <!-- module_name -->
+                <div class="row">
+                    {{ form.module_name(placeholder="Please enter module name") }}
+                    <span class="text-warning bg-dark">Please enter name.</span>
+                    <ul>
+                        {% for error in form.module_name.errors %}
+                        <li style="color:red;">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- description -->
+                <div class="row">
+                    {{ form.description(placeholder="Please enter description") }}
+                    <span class="text-warning bg-dark">Please enter description.</span>
+                    <ul>
+                        {% for error in form.description.errors %}
+                        <li style="color:red;">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- tutor -->
+                <div class="row">
+                    {{ form.tutors(placeholder="Please enter tutor ID") }}
+                    <span class="text-warning bg-dark">Please enter ID.</span>
+                    <ul>
+                        {% for error in form.tutors.errors %}
+                        <li style="color:red;">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+               
+                <div class="row">
+                    <button type="submit" class="btn btn-primary border-warning w-25 m-auto">
+                        Add module
+                    </button>
+                    <a href="{{ url_for('modules_management') }}" class="btn btn-primary m-auto border-warning w-25">Back</a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section>
+    <div class="container pt-2">
+        <table class="table table-striped bg-light">
+            <thead>
+              <tr>
+                <th scope="col">Module</th>
+                <th scope="col">Student</th>
+                <th scope="col">CA1</th>
+                <th scope="col">CA2</th>
+                <th scope="col">Exam</th>
+                <th scope="col">Tutor</th>
+              </tr>
+            </thead>
+            {% for enrolment in enrolments %}
+            <tbody>
+              <tr>
+                <td scope="row">{{ enrolment.module_name }}</td>
+                <td scope="row">{{ enrolment.student_lname }}</td>
+                <td> {{ enrolment.Enrolments.ca1_score }} </td>
+                <td> {{ enrolment.Enrolments.ca2_score }} </td>
+                <td> {{ enrolment.Enrolments.exam_score }} </td>
+                <td> {{ enrolment.tutor_lname }} </td>
+                <td><a href="{{ url_for('tutor_update_grades', enrolment_id=enrolment.Enrolments.id) }}" class="btn btn-primary border-warning btn-sm">Update</a></td>
+              </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+        <div class="text-end">
+        <a href="{{ url_for('tutor_profile', user_email=session['user_email']) }}" class="btn btn-primary border-warning">Back</a>
+        </div>
+    </div>
+</section>
+    
+{% endblock %}

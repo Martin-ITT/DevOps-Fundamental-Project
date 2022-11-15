@@ -9,7 +9,6 @@ from wtforms.validators import (
 
 # user registration forms
 class RegistrationForm(FlaskForm):
-    
     user_fname = StringField('user_fname', validators=[DataRequired(), Length(
         min=2, max=30, message='Name must be between \
             %(min)d and %(max)d characters long')])
@@ -28,6 +27,7 @@ class RegistrationForm(FlaskForm):
             '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$',
             message="Invalid characters in email address.")])
 
+
 # user login form
 class LoginForm(FlaskForm):
     user_login_email = StringField(
@@ -37,22 +37,8 @@ class LoginForm(FlaskForm):
     user_login_password = PasswordField(
         'user_login_password', validators=[DataRequired()])
 
-class StudentForm(FlaskForm):
-    # enrolments ##############################################################################
-    # SelectMultipleField(default field arguments, choices=[], coerce=unicode, option_widget=None)
-    # FormField(form_class, default field arguments, separator='-')
-    '''
-    class TelephoneForm(Form):
-        country_code = IntegerField('Country Code', [validators.required()])
-        area_code    = IntegerField('Area Code/Exchange', [validators.required()])
-        number       = StringField('Number')
 
-    class ContactForm(Form):
-        first_name   = StringField()
-        last_name    = StringField()
-        mobile_phone = FormField(TelephoneForm)
-        office_phone = FormField(TelephoneForm)
-    '''
+class StudentForm(FlaskForm):
     student_fname = StringField('student_fname', validators=[DataRequired(), Length(
         min=2, max=30, message='Name must be between \
             %(min)d and %(max)d characters long')])
@@ -87,21 +73,6 @@ class StudentForm(FlaskForm):
 
 
 class TutorForm(FlaskForm):
-    # enrolments ##############################################################################
-    # SelectMultipleField(default field arguments, choices=[], coerce=unicode, option_widget=None)
-    # FormField(form_class, default field arguments, separator='-')
-    '''
-    class TelephoneForm(Form):
-        country_code = IntegerField('Country Code', [validators.required()])
-        area_code    = IntegerField('Area Code/Exchange', [validators.required()])
-        number       = StringField('Number')
-
-    class ContactForm(Form):
-        first_name   = StringField()
-        last_name    = StringField()
-        mobile_phone = FormField(TelephoneForm)
-        office_phone = FormField(TelephoneForm)
-    '''
     tutor_fname = StringField('tutor_fname', validators=[DataRequired(), Length(
         min=2, max=30, message='Name must be between \
             %(min)d and %(max)d characters long')])
@@ -144,3 +115,20 @@ class ModulesForm(FlaskForm):
     description = StringField('Module_description')
     enrolments = FormField(StudentForm, 'enrolments')
     tutors = QuerySelectField(query_factory=select_tutor, validators=[DataRequired()])
+
+
+class AddModulesForm(FlaskForm):
+    module_name = StringField('Module_name')
+    description = StringField('Module_description')
+    tutors = StringField('Module_description')
+
+
+class GradesForm(FlaskForm):
+    ca1 = IntegerField('CA 1 grade')
+    ca2 = IntegerField('CA 2 grade')
+    exam = IntegerField('Exam grade')
+
+
+class EnrolmentForm(FlaskForm):
+    enrol_student_id = IntegerField('CA 1 grade', validators=[DataRequired()])
+    enrol_module_id = IntegerField('CA 2 grade', validators=[DataRequired()])
