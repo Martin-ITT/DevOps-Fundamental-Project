@@ -19,13 +19,12 @@
                 </div>
             </div>
         </form>
-        {% for module in modules %}
+        {% for tutor in tutors %}
             <p>
-            {{ module.module_name }}
-            {{ module.module_description }}
-            {{ module.m_tutor_id }}
-            {{ module.enrolments }}
-            <a href="#" class="btn btn-primary border-warning btn-sm">Update or delete</a>
+            {{ tutor.tutor_fname }}
+            {{ tutor.tutor_lname }}
+            {{ tutor.tutor_email }}
+            <a href="{{ url_for('update_tutor_profile', tutor_id=tutor.id) }}" class="btn btn-primary border-warning btn-sm">Update or delete</a>
         {% endfor %}
     </div>
 

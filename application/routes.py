@@ -1,7 +1,7 @@
 from application import app, db
 from flask import render_template, request, flash, redirect, url_for, session
 from application.models import Students, Tutors, Modules, Enrolments
-from application.forms import RegistrationForm, LoginForm, StudentForm, TutorForm
+from application.forms import RegistrationForm, LoginForm, StudentForm, TutorForm, ModulesForm
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import date
 from flask_sqlalchemy import SQLAlchemy
@@ -294,8 +294,8 @@ def update_tutor_profile(tutor_id):
         tutor = Tutors.query.filter_by(id=tutor_id).first()
         
         # POST method
-        # if request.method == "POST":
-        if form.validate_on_submit():
+        if request.method == "POST":
+        # if form.validate_on_submit():
 
             tutor.tutor_fname = form.tutor_fname.data
             tutor.tutor_lname = form.tutor_lname.data
@@ -309,16 +309,14 @@ def update_tutor_profile(tutor_id):
 
             # update tutor in database
             db.session.commit()
-
             flash("Record updated")
-            return redirect(url_for('tutor_profile', user_email=session['user_email']))
 
-        # else:
-        #     return redirect(
-        #         url_for('profile', user_email=session['user_email']))
+            if session['user_email'] == "admin@admin.com":
+                return redirect(url_for('tutor_management'))
+
+            return redirect(url_for('profile', user_email=session['user_email']))
 
     return render_template("update_tutor_profile.html", form=form, tutor=tutor)
-
 
 # student management
 @app.route("/student_ management")
@@ -349,9 +347,36 @@ def delete_student(student_id):
     return redirect(url_for('home'))
 
 
+# tutor management
+@app.route("/tutor_ management")
+def tutor_management():
+    if session['user_email']:
+        
+        tutors = Tutors.query.all()
+        return render_template("tutor_management.html", tutors=tutors)
+
+    return redirect(url_for('home'))
+
+
+# delete tutor record
+@app.route("/delete_tutor/<int:tutor_id>")
+def delete_tutor(tutor_id):
+    if session['user_email'] == "admin@admin.com":
+        
+        tutor = Tutors.query.filter_by(id=tutor_id).first()
+        db.session.delete(tutor)
+        db.session.commit()
+        tutors = Tutors.query.all()
+        flash("Record deleted!")
+    
+        return render_template("tutor_management.html", tutors=tutors)
+
+    return redirect(url_for('home'))
+
+
 # modules management
-@app.route("/manage_modules")
-def manage_modules():
+@app.route("/modules_management")
+def modules_management():
     if session['user_email'] == "admin@admin.com":
         
         modules = Modules.query.all()
@@ -362,7 +387,35 @@ def manage_modules():
             f.write(" - enrolments: " + str(module.enrolments) + "\n")
         f.close()
             
-        return render_template("manage_modules.html", modules=modules)
+        return render_template("modules_management.html", modules=modules)
 
     return redirect(url_for('home'))
 
+
+# update module
+@app.route("/update_module/<int:module_id>", methods=["GET", "POST"])
+def update_module(module_id):
+    if session['user_email'] == "admin@admin.com":
+
+        form = ModulesForm()
+        module = Modules.query.filter_by(id=module_id).first()
+        
+        # POST method
+        if request.method == "POST":
+        # if form.validate_on_submit():
+
+            module.module_name = form.module_name.data
+            module.description = form.description.data
+            module.enrolments = form.enrolments.data
+            module.m_tutor_id = form.tutors.data
+
+            # update tutor in database
+            db.session.commit()
+            flash("Record updated")
+
+            if session['user_email'] == "admin@admin.com":
+                return redirect(url_for('tutor_management'))
+
+            return redirect(url_for('profile', user_email=session['user_email']))
+
+    return render_template("update_modules.html", form=form, module=module)

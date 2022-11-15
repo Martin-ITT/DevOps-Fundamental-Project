@@ -1,6 +1,8 @@
 # from werkzeug.security import generate_password_hash, check_password_hash
+from application.models import Tutors
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, IntegerField, DateField
+from wtforms import StringField, PasswordField, IntegerField, DateField, FormField
+from wtforms_sqlalchemy.fields import QuerySelectField
 from wtforms import validators
 from wtforms.validators import (
     InputRequired, Length, Email, EqualTo, DataRequired, Regexp)
@@ -133,6 +135,12 @@ class TutorForm(FlaskForm):
     authority_lvl = IntegerField('authority_lvl', validators=[Length(max=10)])
 
 
-class Modules(FlaskForm):
+def select_tutor():
+    return Tutors.query
+
+
+class ModulesForm(FlaskForm):
     module_name = StringField('Module_name')
     description = StringField('Module_description')
+    enrolments = FormField(StudentForm, 'enrolments')
+    tutors = QuerySelectField(query_factory=select_tutor, allow_blank=True)

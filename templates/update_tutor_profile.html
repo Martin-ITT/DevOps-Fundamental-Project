@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h3 class="center-align indigo-text hide-on-small-only">Change details</h3>
+<h3 class="mx-auto text-center text-danger bg-dark w-25">Change tutor details</h3>
 
     <!-- registration form -->
     <div class="row m-auto w-50">
@@ -12,8 +12,13 @@
                         {{ form.csrf_token }}
                         <!-- tutor fname -->
                         <div class="row">
+                            {% if session['user_email'] == "admin@admin.com" %}
+                            {{ form.tutor_fname(class="form-input small-input", value=tutor.tutor_fname) }}
+                            <span class="text-warning bg-dark">Forename</span>
+                            {% else %}
                             {{ form.tutor_fname(readonly=true, class="form-input small-input", value=tutor.tutor_fname) }}
-                            <span class="text-danger bg-dark">Forename cannot be edited</span>
+                            <span class="text-danger bg-dark">Only admin can update name</span>
+                            {% endif %}
                             <ul>
                                 {% for error in form.tutor_fname.errors %}
                                 <li style="color:red;">{{ error }}</li>
@@ -22,8 +27,13 @@
                         </div>
                         <!-- tutor lname -->
                         <div class="row">
+                            {% if session['user_email'] == "admin@admin.com" %}
+                            {{ form.tutor_lname(class="form-input small-input", value=tutor.tutor_lname) }}
+                            <span class="text-warning bg-dark">Surname</span>
+                            {% else %}
                             {{ form.tutor_lname(readonly=true, class="form-input small-input", value=tutor.tutor_lname) }}
-                            <span class="text-danger bg-dark">Surname cannot be edited</span>
+                            <span class="text-danger bg-dark">Only admin can update name</span>
+                            {% endif %}
                             <ul>
                                 {% for error in form.tutor_lname.errors %}
                                 <li style="color:red;">{{ error }}</li>
@@ -82,8 +92,13 @@
                         </div>
                         <!-- tutor DOB -->
                         <div class="row">
+                            {% if session['user_email'] == "admin@admin.com" %}
                             {{ form.tutor_DOB(class="form-input small-input", value=tutor.tutor_DOB) }}
                             <span class="text-warning bg-dark">Date of birth</span>
+                            {% else %}
+                            {{ form.tutor_DOB(readonly=true, class="form-input small-input", value=tutor.tutor_DOB) }}
+                            <span class="text-danger bg-dark">Only admin can update DOB</span>
+                            {% endif %}
                             <ul>
                                 {% for error in form.tutor_DOB.errors %}
                                 <li style="color:red;">{{ error }}</li>
@@ -92,17 +107,30 @@
                         </div>
                         <!-- tutor email -->
                         <div class="row">
+                            {% if session['user_email'] == "admin@admin.com" %}
+                            {{ form.tutor_email(class="form-input small-input", value=tutor.tutor_email) }}
+                            <span class="text-warning bg-dark">Email address</span>
+                            {% else %}
                             {{ form.tutor_email(readonly=true, class="form-input small-input", value=tutor.tutor_email) }}
-                            <span class="text-danger bg-dark">Email address cannot be changed</span>
+                            <span class="text-danger bg-dark">Only admin can update email address</span>
+                            {% endif %}
                             <ul>
                                 {% for error in form.tutor_email.errors %}
                                 <li style="color:red;">{{ error }}</li>
                                 {% endfor %}
                             </ul>
                         </div>
-                        <button type="submit" class="btn btn-primary border-warning w-25 m-auto">
+                        <div class="text-center">
+                        <button type="submit" class="btn btn-warning border-primary btn-sm">
                             Update
                         </button>
+                        {% if session['user_email'] == "admin@admin.com" %}
+                        <a href="{{ url_for('delete_tutor', tutor_id=tutor.id) }}" class="btn btn-danger border-warning btn-sm">Delete</a>
+                        <a href="{{ url_for('tutor_profile', user_email=session['user_email']) }}" class="btn btn-primary border-warning btn-sm">Cancel</a>
+                        {% else %}
+                        <a href="{{ url_for('profile', user_email=session['user_email']) }}" class="btn btn-primary border-warning btn-sm">Cancel</a>
+                        {% endif %}
+                        </div>
                     </form>
                 </div>
             </div>

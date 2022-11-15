@@ -18,18 +18,21 @@ class Students(db.Model):
 
 class Tutors(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    t_modules = db.relationship('Modules', backref='tutors') # FK ref Modules
+    t_modules = db.relationship('Modules', cascade="all,delete", backref='tutors') # FK ref Modules
     tutor_fname = db.Column(db.String(30), nullable=False)
     tutor_lname = db.Column(db.String(30), nullable=False)
     tutor_address1 = db.Column(db.String(50), nullable=False)
     tutor_address2 = db.Column(db.String(50), nullable=False)
     tutor_city = db.Column(db.String(30), nullable=False)
     tutor_county = db.Column(db.String(30), nullable=False)
-    tutor_phone = db.Column(db.Integer, nullable=False)
-    tutor_DOB = db.Column(db.DateTime, nullable=False)
+    tutor_phone = db.Column(db.String(20), nullable=False)
+    tutor_DOB = db.Column(db.Date, nullable=False)
     tutor_email = db.Column(db.String(50), nullable=False)
     tutor_password_ff = db.Column(db.String(50), nullable=False)
     authority_lvl = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return f'{self.tutor_email}'
 
 
 class Modules(db.Model):

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="mx-auto text-center text-danger bg-dark w-25">Change modules</h3>
+
+    <!-- registration form -->
+    <div class="row m-auto w-50">
+        <div class="">
+            <div class="">
+                <div class="row">
+                    <form class="" method="POST" action="{{ url_for('update_module', module_id=module.id) }}">
+                        {{ form.csrf_token }}
+                        <!-- module name -->
+                        <div class="row">
+                            {{ form.module_name(class="form-input small-input", value=module.module_name) }}
+                            <span class="text-warning bg-dark">Module name</span>
+                            <ul>
+                                {% for error in form.module_name.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- module description -->
+                        <div class="row">
+                            {{ form.description(class="form-input small-input", value=module.description) }}
+                            <span class="text-danger bg-dark">Description</span>
+                            <ul>
+                                {% for error in form.description.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        <!-- tutor email -->
+                        <div class="row">
+                            {{ form.tutors(class="form-input small-input", value=module.m_tutor_id) }}
+                            <span class="text-warning bg-dark">Tutor</span>
+                            <ul>
+                                {% for error in form.tutors.errors %}
+                                <li style="color:red;">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        <div class="text-center">
+                        <button type="submit" class="btn btn-warning border-primary btn-sm">
+                            Update
+                        </button>
+                        {% if session['user_email'] == "admin@admin.com" %}
+                        <a href="#" class="btn btn-danger border-warning btn-sm">Delete</a>
+                        <a href="{{ url_for('tutor_profile', user_email=session['user_email']) }}" class="btn btn-primary border-warning btn-sm">Cancel</a>
+                        {% else %}
+                        <a href="{{ url_for('profile', user_email=session['user_email']) }}" class="btn btn-primary border-warning btn-sm">Cancel</a>
+                        {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
