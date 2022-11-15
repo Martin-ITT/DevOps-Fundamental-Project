@@ -47,7 +47,7 @@
                             Update
                         </button>
                         {% if session['user_email'] == "admin@admin.com" %}
-                        <a href="#" class="btn btn-danger border-warning btn-sm">Delete</a>
+                        <a href="{{ url_for('delete_module', module_id=module.id) }}" class="btn btn-danger border-warning btn-sm">Delete</a>
                         <a href="{{ url_for('tutor_profile', user_email=session['user_email']) }}" class="btn btn-primary border-warning btn-sm">Cancel</a>
                         {% else %}
                         <a href="{{ url_for('profile', user_email=session['user_email']) }}" class="btn btn-primary border-warning btn-sm">Cancel</a>

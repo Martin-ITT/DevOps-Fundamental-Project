@@ -31,7 +31,7 @@ class Tutors(db.Model):
     tutor_password_ff = db.Column(db.String(50), nullable=False)
     authority_lvl = db.Column(db.Integer, nullable=False)
 
-    def __repr__(self):
+    def __str__(self):
         return f'{self.tutor_email}'
 
 

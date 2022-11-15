@@ -143,4 +143,4 @@ class ModulesForm(FlaskForm):
     module_name = StringField('Module_name')
     description = StringField('Module_description')
     enrolments = FormField(StudentForm, 'enrolments')
-    tutors = QuerySelectField(query_factory=select_tutor, allow_blank=True)
+    tutors = QuerySelectField(query_factory=select_tutor, validators=[DataRequired()])

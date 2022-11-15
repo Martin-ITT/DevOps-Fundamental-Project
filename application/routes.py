@@ -190,7 +190,7 @@ def tutor_login():
                     session["user_email"] = form.user_login_email.data.lower()
                     flash("Welcome, {}".format(tutor.tutor_fname))
                     # print(session.user_email)
-                    flash("cookie: {}".format(session['user_email']))
+                    # flash("cookie: {}".format(session['user_email']))
                     return redirect(
                         url_for('tutor_profile', user_email=session['user_email']))
 
@@ -406,8 +406,8 @@ def update_module(module_id):
 
             module.module_name = form.module_name.data
             module.description = form.description.data
-            module.enrolments = form.enrolments.data
-            module.m_tutor_id = form.tutors.data
+            # module.enrolments = form.enrolments.data
+            module.m_tutor_id = form.tutors.data.id
 
             # update tutor in database
             db.session.commit()
@@ -419,3 +419,19 @@ def update_module(module_id):
             return redirect(url_for('profile', user_email=session['user_email']))
 
     return render_template("update_modules.html", form=form, module=module)
+
+
+# delete module
+@app.route("/delete_module/<int:module_id>")
+def delete_module(module_id):
+    if session['user_email'] == "admin@admin.com":
+        
+        module = Modules.query.filter_by(id=module_id).first()
+        db.session.delete(module)
+        db.session.commit()
+        modules = Modules.query.all()
+        flash("Record deleted!")
+    
+        return render_template("modules_management.html", modules=modules)
+
+    return redirect(url_for('home'))
