@@ -4,6 +4,7 @@
 <section>
     <div class="text-danger text-end">
         <form action="#" method="POST">
+            <!--
             <div class="text-warning bg-dark text-center pt-2">
                 <input type="text" name="query" id="query" minlength="3" class="validate white-text" required>
                 <label for="query">Search</label>
@@ -11,6 +12,8 @@
             </div>
             <div class="">
                 <button type="submit" class="btn btn-primary border-warning btn-lg my-btns">Search</button>
+            -->
+            <div>
                 <a href="{{ url_for('tutor_profile', user_email=session['user_email']) }}" class="btn btn-primary border-warning btn-lg my-btns">Cancel</a>
                 <a href="{{ url_for('admin_add_tutor') }}" class="btn btn-success border-warning btn-lg my-btns">Add Tutor</a>
             </div>
