@@ -1,0 +1,24 @@
+Running the Unit Tests
+Now we are ready to run the tests.
+
+Execute the test and include a coverage report by running:
+
+python3 -m pytest --cov
+This will gather coverage of our app, our test code and any code in the venv,
+which will skew our coverage result.
+
+We can test the coverage of just the app.py file by running:
+
+python3 -m pytest --cov=app
+You should see that the tests currently only achieve 87% coverage.
+
+We can see which lines of code we haven't been able to test by running:
+
+python3 -m pytest --cov=app --cov-report term-missing
+Can you figure out why those lines aren't being covered by the test?
+
+We can also save the coverage report to an HTML file by running the following
+
+python3 -m pytest --cov=app --cov-report html
+This will create a directory called htmlcov. There are many files in there but the
+one we are interested in is index.html. Open that in a web browser to access the coverage report.
